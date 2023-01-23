@@ -171,13 +171,14 @@ public class ScheduleController {
                 User user = itr.next();
                 if (user.getUserId() == dto.getUserId() && user.getUserId() != schedule.getOwnerId()) {
                     itr.remove();
+                    removeUserMail.sendEmail(u.getMail(), schedule.getTitle());
                 }
             }
             schedule.setUpdatetime(upDate);
             schedule.setUpdateUser(dto.getCurrentUserId());
             schedule.setMembers(users);
             schService.save(schedule);
-            removeUserMail.sendEmail(u.getMail(), schedule.getTitle());
+            
           
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Check Ur User Informantion!");
