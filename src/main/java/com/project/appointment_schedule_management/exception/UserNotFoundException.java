@@ -1,0 +1,11 @@
+package com.project.appointment_schedule_management.exception;
+
+public class UserNotFoundException extends Exception {
+
+	public UserNotFoundException(String message) {
+		super(message);
+		// TODO Auto-generated constructor stub
+	}
+
+	
+}
