@@ -14,5 +14,6 @@ public interface WeeklyViewInter {
     LocalDate getEnd();
     LocalTime getEnd_time();
     String getStatus();
+    Boolean getPrivacy();
 
 }

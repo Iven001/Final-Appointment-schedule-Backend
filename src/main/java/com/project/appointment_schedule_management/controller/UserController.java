@@ -37,6 +37,7 @@ import com.project.appointment_schedule_management.dto.DailyViewDto;
 import com.project.appointment_schedule_management.dto.UpdateNickAndBio;
 import com.project.appointment_schedule_management.dto.UserDetailsDto;
 import com.project.appointment_schedule_management.dto.UserDto;
+import com.project.appointment_schedule_management.dto.WeeklyView;
 import com.project.appointment_schedule_management.model.User;
 import com.project.appointment_schedule_management.model.Employee;
 import com.project.appointment_schedule_management.model.Role;
@@ -80,9 +81,33 @@ public class UserController {
             @RequestParam(value = "end") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate end,
             @RequestParam int userId) {
 
+                LocalDate now = LocalDate.now();
+
         try {
             List<WeeklyViewInter> list = userService.getUserWeeklyViews(userId, start, end);
-            return ResponseEntity.status(HttpStatus.OK).body(list);
+            List<WeeklyView> weekList = new ArrayList<WeeklyView>();
+            for (int i=0; i < list.size() ; i++) {
+                WeeklyView dto = new WeeklyView();
+                dto.setUserId(list.get(i).getUserId());
+                dto.setScheduleId(list.get(i).getScheduleId());
+                dto.setDescription(list.get(i).getDescription());
+                dto.setStart(list.get(i).getStart());
+                dto.setStart_time(list.get(i).getStart_time());
+                dto.setEnd(list.get(i).getEnd());
+                dto.setEnd_time(list.get(i).getEnd_time());
+                dto.setStatus(list.get(i).getStatus());
+                dto.setPrivacy(list.get(i).getPrivacy());
+                
+                weekList.add(i, dto);        
+           }
+            
+           //weekDto.setUserId(list.get)
+            for (WeeklyView d : weekList){
+                if (d.getStart().isBefore(now)){
+                    d.setStatus("expired");
+                }
+            }
+            return ResponseEntity.status(HttpStatus.OK).body(weekList);
 
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
