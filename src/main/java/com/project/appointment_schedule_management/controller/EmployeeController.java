@@ -24,7 +24,6 @@ import com.project.appointment_schedule_management.model.User;
 import com.project.appointment_schedule_management.service.EmployeeService;
 import com.project.appointment_schedule_management.service.UserService;
 
-
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/employee")
@@ -33,11 +32,9 @@ public class EmployeeController {
     // @Autowired
     // EmployeeService empService;
 
-   
-
     @Autowired
     UserService userService;
-    
+
     private final EmployeeService empService;
     private final EmployeeRepository empRepository;
 
@@ -49,18 +46,19 @@ public class EmployeeController {
     @PostMapping({ "/createEmployee" })
     public ResponseEntity<?> createEmployee(@RequestBody EmployeeDto empDto) {
         Employee emp = new Employee();
-        //emp = empService.getEmployeeById(empDto.getEmployeeId());
+        // emp = empService.getEmployeeById(empDto.getEmployeeId());
 
         try {
             // if (emp.getEmployeeId()==empDto.getEmployeeId()) {
-            //     return ResponseEntity.status(HttpStatus.ALREADY_REPORTED).body("UserId Already Exited!!");
+            // return ResponseEntity.status(HttpStatus.ALREADY_REPORTED).body("UserId
+            // Already Exited!!");
             // }else {
-                emp.setEmployeeId(empDto.getEmployeeId());
-                emp.setEmployeeName(empDto.getEmployeeName());
-                emp.setPosition(empDto.getPosition());
-                emp.setTeam(empDto.getTeam());
-                empService.saveEmployee(emp);
-            
+            emp.setEmployeeId(empDto.getEmployeeId());
+            emp.setEmployeeName(empDto.getEmployeeName());
+            emp.setPosition(empDto.getPosition());
+            emp.setTeam(empDto.getTeam());
+            empService.saveEmployee(emp);
+
             return ResponseEntity.status(HttpStatus.CREATED).body(emp);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
@@ -80,47 +78,65 @@ public class EmployeeController {
     }
 
     @PostMapping("/setEmployeeUpdate/{empId}")
-    public ResponseEntity<?> setEmployeeUpdate (@PathVariable int empId) {
+    public ResponseEntity<?> setEmployeeUpdate(@PathVariable int empId) {
         EmployeeDto empDto = new EmployeeDto();
-         try {
+        try {
             Employee emp = new Employee();
-           emp = empService.getEmployeeById(empId);
-           empDto.setEmployeeId(emp.getEmployeeId());
-           empDto.setEmployeeName(emp.getEmployeeName());
-           empDto.setPosition(emp.getPosition());
-           empDto.setTeam(emp.getTeam());
+            emp = empService.getEmployeeById(empId);
+            empDto.setEmployeeId(emp.getEmployeeId());
+            empDto.setEmployeeName(emp.getEmployeeName());
+            empDto.setPosition(emp.getPosition());
+            empDto.setTeam(emp.getTeam());
             return ResponseEntity.status(HttpStatus.CREATED).body(empDto);
-         } catch (Exception e) {
+        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Employee Id not found!");
-         }
+        }
     }
 
     @PutMapping("/updateEmployee")
-    public ResponseEntity<?> updateEmployee (@RequestBody EmployeeDto empDto) {
-         try {
+    public ResponseEntity<?> updateEmployee(@RequestBody EmployeeDto empDto) {
+        try {
             Employee emp = new Employee();
-           emp = empService.getEmployeeById(empDto.getEmployeeId());
-           if(emp != null){
-              emp.setEmployeeName(empDto.getEmployeeName());
-              emp.setPosition(empDto.getPosition());
-              emp.setTeam(empDto.getTeam());
-              empService.saveEmployee(emp);
-           }
+            emp = empService.getEmployeeById(empDto.getEmployeeId());
+            if (emp != null) {
+                emp.setEmployeeName(empDto.getEmployeeName());
+                emp.setPosition(empDto.getPosition());
+                emp.setTeam(empDto.getTeam());
+                empService.saveEmployee(emp);
+            }
             return ResponseEntity.status(HttpStatus.CREATED).body(emp);
-         } catch (Exception e) {
+        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-         }
-    }  
+        }
+    }
 
     @GetMapping("/getAllEmployees")
-    public ResponseEntity<?> getAllEmployees (){
-     try {
-        List <Employee> list = empService.getAllEmployees();
-        return ResponseEntity.status(HttpStatus.OK).body(list);
-     } catch (Exception e) {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-     }
+    public ResponseEntity<?> getAllEmployees() {
+        try {
+            List<Employee> list = empService.getAllEmployees();
+            return ResponseEntity.status(HttpStatus.OK).body(list);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+    @GetMapping("/findEmployeeById")
+    public ResponseEntity<?> findEmployeeById(@RequestBody int empId) {
+        try {
+            Employee emp = empService.getEmployeeById(empId);
+            return ResponseEntity.status(HttpStatus.OK).body(emp);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+    @GetMapping("/findEmployeeByName")
+    public ResponseEntity<?> findEmployeeByName(@RequestBody String empName) {
+        try {
+            Employee emp = empService.getEmployeeByEmployeeName(empName);
+            return ResponseEntity.status(HttpStatus.OK).body(emp);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
 }
-
-

@@ -25,7 +25,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     private final RequestMatcher ignoredPath1 = new AntPathRequestMatcher("/user/register");
     private final RequestMatcher ignoredPath2 = new AntPathRequestMatcher("/password/forget_password");
     private final RequestMatcher ignoredPath3 = new AntPathRequestMatcher("/password/reset_password");
-    private final RequestMatcher ignoredPath4 = new AntPathRequestMatcher("/image/dejavu?userId");
+   // private final RequestMatcher ignoredPath4 = new AntPathRequestMatcher("/employee/findEmployeeById");
     @Autowired
     private JwtUtil jwtUtil;
 
@@ -37,7 +37,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
 
         if (this.ignoredPath1.matches(request) || this.ignoredPath2.matches(request)
-                || this.ignoredPath3.matches(request) || this.ignoredPath4.matches(request)) {
+                || this.ignoredPath3.matches(request)) {
             filterChain.doFilter(request, response);
             return;
         }
