@@ -71,22 +71,7 @@ public class ScheduleController {
     public ResponseEntity<?> createRegister(@RequestBody SchduleDto sch)
             throws UnsupportedEncodingException, MessagingException {
 
-                //Schedule schedule = schService.findByScheduleId(dto.getScheduleId());
-            // User us = userService.getUserById(sch.getCreateUser());
-
-            // // List<User> users = dto.getMembersList();
-            // List<User> userList = sch.getMembersList();
-            // userList.add(us);
-            
-
-        // List<User> members = sch.getMembersList();
-        // User createUser = userService.findById(sch.getCreateUser());
-        // String createUserName = createUser.getUname();
-        // for (User u : members) {
-        //     if(u.getUserId() != createUser.getUserId()){
-        //         emailTask.sendEmail(u.getMail(), sch , createUserName);
-        //     }
-        // }
+               
                     schService.saveSchedule(sch);
         try {
             // schService.saveSchedule(sch);

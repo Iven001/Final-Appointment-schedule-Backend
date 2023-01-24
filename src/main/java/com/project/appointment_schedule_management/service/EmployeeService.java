@@ -2,7 +2,7 @@ package com.project.appointment_schedule_management.service;
 
 import java.util.List;
 
-
+import com.project.appointment_schedule_management.Interface.EmployeeInter;
 import com.project.appointment_schedule_management.model.Employee;
 
 public interface EmployeeService {
@@ -16,5 +16,7 @@ public interface EmployeeService {
     void deleteEmployee (int empId);
 
     List <Employee> getAllEmployees ();
+
+    List<EmployeeInter> findByEmployee (int empId,String empName);
 
 }

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.project.appointment_schedule_management.dao.EmployeeRepository;
@@ -46,18 +47,19 @@ public class EmployeeController {
     @PostMapping({ "/createEmployee" })
     public ResponseEntity<?> createEmployee(@RequestBody EmployeeDto empDto) {
         Employee emp = new Employee();
-        // emp = empService.getEmployeeById(empDto.getEmployeeId());
 
+        Optional<Employee> oldEmp = empRepository.findByEmployeeId(empDto.getEmployeeId());
+        int i = empDto.getEmployeeId();
         try {
-            // if (emp.getEmployeeId()==empDto.getEmployeeId()) {
-            // return ResponseEntity.status(HttpStatus.ALREADY_REPORTED).body("UserId
-            // Already Exited!!");
-            // }else {
-            emp.setEmployeeId(empDto.getEmployeeId());
-            emp.setEmployeeName(empDto.getEmployeeName());
-            emp.setPosition(empDto.getPosition());
-            emp.setTeam(empDto.getTeam());
-            empService.saveEmployee(emp);
+            if (oldEmp.isPresent()){
+                return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
+            }else{
+                emp.setEmployeeId(empDto.getEmployeeId());
+                emp.setEmployeeName(empDto.getEmployeeName());
+                emp.setPosition(empDto.getPosition());
+                emp.setTeam(empDto.getTeam());
+                empService.saveEmployee(emp);
+            }
 
             return ResponseEntity.status(HttpStatus.CREATED).body(emp);
         } catch (Exception e) {
@@ -121,7 +123,7 @@ public class EmployeeController {
     }
 
     @GetMapping("/findEmployeeById")
-    public ResponseEntity<?> findEmployeeById(@RequestBody int empId) {
+    public ResponseEntity<?> findEmployeeById(@RequestParam int empId) {
         try {
             Employee emp = empService.getEmployeeById(empId);
             return ResponseEntity.status(HttpStatus.OK).body(emp);
@@ -131,7 +133,7 @@ public class EmployeeController {
     }
 
     @GetMapping("/findEmployeeByName")
-    public ResponseEntity<?> findEmployeeByName(@RequestBody String empName) {
+    public ResponseEntity<?> findEmployeeByName(@RequestParam String empName) {
         try {
             Employee emp = empService.getEmployeeByEmployeeName(empName);
             return ResponseEntity.status(HttpStatus.OK).body(emp);

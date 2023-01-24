@@ -40,36 +40,6 @@ public class ImageController {
         this.imgService = imgService;
     }
 
-    // @PostMapping
-    // public ResponseEntity<?> uploadImage(@RequestParam("image") MultipartFile
-    // file, @RequestParam("id") Integer id)
-    // throws IOException {
-
-    // try {
-    // String uploadImage = imgService.uploadImage(file);
-    // // if (uploadImage.isEmpty()) {
-    // // return ResponseEntity.status(HttpStatus.NOT_FOUND).body(uploadImage);
-    // // }else {
-    // int userId = id;
-
-    // User u = userService.findById(userId);
-    // String imgName = file.getOriginalFilename();
-    // System.out.println(imgName);
-    // String test = imgName;
-    // ArrayList<Image> i = imgService.findByName(imgName);
-    // for (int a = 0; a <= i.size() - 1; a++) {
-    // Image imgToSet = i.get(a);
-    // u.setImgId(imgToSet.getImageId());
-    // }
-
-    // userService.saveUser(u);
-
-    // return ResponseEntity.status(HttpStatus.CREATED).body(uploadImage);
-
-    // } catch (Exception e) {
-    // return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-    // }
-    // }
 
     @GetMapping("/hello/{fileName}")
     public ResponseEntity<?> downloadImage(@PathVariable String fileName) {
@@ -80,61 +50,6 @@ public class ImageController {
                 .body(imageData);
     }
 
-    // @GetMapping("/getImage/{id}")
-    // public ResponseEntity<?> getUserImages (@PathVariable Integer id) {
-
-    // int userId=id;
-    // User u = userService.findById(userId);
-    // Integer imageId = u.getImgId();
-    // Image img = imgService.findById(imageId);
-    // // String fileName = img.getName();
-
-    // byte[] imageData = imgService.downloadImage(img.getName());
-    // return ResponseEntity.status(HttpStatus.OK)
-    // .contentType(MediaType.valueOf("image/png"))
-    // .body(imageData);
-    // }
-
-    // @GetMapping("/userImage/{id}")
-    // public ResponseEntity<?> userImage (@PathVariable Integer id) {
-    // Image i = imgService.findById(id);
-
-    // String fileName =i.getName();
-    // byte[] imageData = imgService.downloadImage(fileName);
-    // return ResponseEntity.status(HttpStatus.OK)
-    // .contentType(MediaType.valueOf("image/png"))
-    // .body(imageData);
-    // }
-
-    // @DeleteMapping("/{id}")
-    // public ResponseEntity<?> deleteImage (@PathVariable int
-    // id,@RequestParam("id") Integer useID) {
-
-    // try {
-    // imgService.deleteUser(id);
-    // return ResponseEntity.status(HttpStatus.OK).body("Image deleted
-    // successfully!");
-    // } catch (Exception e) {
-    // return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-    // }
-    // }
-
-    // @PostMapping("/update/{id}")
-    // public ResponseEntity<?> updateImage(@PathVariable("id") int
-    // id,@RequestParam("image")MultipartFile file) throws IOException {
-    // Optional<Image> img= imgRepo.findById(id);
-
-    // try {
-    // if (img.isPresent()) {
-    // imgService.deleteUser(id);
-    // String uploadImage = imgService.uploadImage(file);
-    // return ResponseEntity.status(HttpStatus.CREATED).body(uploadImage);
-    // }
-    // }catch (Exception e) {
-    // return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-    // }
-    // return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-    // }
 
     @PostMapping("/dejavu")
     public ResponseEntity<?> uploadImage(@RequestPart MultipartFile file, @RequestParam("userId") int id)
@@ -145,10 +60,7 @@ public class ImageController {
             System.out.println("UploadImage");
             String uploadImage = imgService.uploadImage(file);
             System.out.println("upload Image message : " + uploadImage);
-            // if (uploadImage.isEmpty()) {
-            // return ResponseEntity.status(HttpStatus.NOT_FOUND).body(uploadImage);
-            // }else {
-            // int userId = Integer.parseInt(id);
+          
 
             User u = userService.findById(id);
             String imgName = file.getOriginalFilename();
