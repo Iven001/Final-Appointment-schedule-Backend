@@ -97,6 +97,12 @@ public class ScheduleServiceImpl implements ScheduleService {
     }
 
     // @Override
+    // public List<InterSchedule> getDailyReport(int userId, LocalDate start) {
+    //     List<InterSchedule> list = (List<InterSchedule>) schRepo.dailyReport(userId, start);
+    //     return list;
+    // }
+
+    // @Override
     // public Schedule updateSchedule(SchduleDto schduleDto) {
 
     //     LocalDate now = LocalDate.now();
