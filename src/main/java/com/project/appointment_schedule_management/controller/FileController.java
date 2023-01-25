@@ -1,10 +1,9 @@
 package com.project.appointment_schedule_management.controller;
 
-
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -30,13 +29,10 @@ import com.project.appointment_schedule_management.dto.ResponseMessage;
 import com.project.appointment_schedule_management.service.FileService;
 import com.project.appointment_schedule_management.service.ScheduleService;
 
-
-
-@CrossOrigin(origins = "http://localhost:4200" )
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/file")
 public class FileController {
-
 
     private final FileRepository fileRep;
     private final FileService fileService;
@@ -51,112 +47,154 @@ public class FileController {
         this.schService = schService;
         this.schRepo = schRepo;
     }
-    
-    
 
     @PostMapping
-    public ResponseEntity<ResponseMessage> uploadFile (@RequestParam("file") MultipartFile file)
-    throws IOException {
+    public ResponseEntity<ResponseMessage> uploadFile(@RequestParam("file") MultipartFile file)
+            throws IOException {
         String message = "";
 
-        try{
+        try {
             fileService.saveFile(file);
-            message = "Uploaded file successfully: "+ file.getOriginalFilename();
+            message = "Uploaded file successfully: " + file.getOriginalFilename();
             return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
         } catch (Exception e) {
-            message = "Could not upload file: "+file.getOriginalFilename() + "!";
+            message = "Could not upload file: " + file.getOriginalFilename() + "!";
             return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new ResponseMessage(message));
         }
     }
 
-     
-
     @PostMapping("/multipartfile")
-    public ResponseEntity<ResponseMessage> uploadMultiPartFile (@RequestParam("file") MultipartFile[] file)
-    throws IOException {
+    public ResponseEntity<ResponseMessage> uploadMultiPartFile(@RequestParam("file") MultipartFile[] file)
+            throws IOException {
         String message = "";
 
-        try{
-            for (MultipartFile files : file){
+        try {
+            for (MultipartFile files : file) {
                 fileService.saveFile(files);
-               
-            } 
-               // message = "Uploaded file successfully: "+ files.getOriginalFilename();
-               message = "Uploaded file successfully: ";
+
+            }
+            // message = "Uploaded file successfully: "+ files.getOriginalFilename();
+            message = "Uploaded file successfully: ";
             return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
         } catch (Exception e) {
-           // message = "Could not upload file: "+files.getOriginalFilename() + "!";
-           message = "Could not upload file: ";
+            // message = "Could not upload file: "+files.getOriginalFilename() + "!";
+            message = "Could not upload file: ";
             return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new ResponseMessage(message));
         }
     }
 
     @GetMapping("/all")
-    public ResponseEntity <?> getListFiles (@RequestParam String fileId) {
-        
-       try {
+    public ResponseEntity<?> getListFiles(@RequestParam String fileId) {
 
-        List<ResponseData> files = fileService.getAllFiles().map(fileData -> {
-            String fileDownloadUri = ServletUriComponentsBuilder
-                            .fromCurrentContextPath()
-                            .path("/file/all")
-                            .path(fileData.getFileId())
-                            .toUriString();
+        try {
 
-                    return new ResponseData(
+            List<ResponseData> files = fileService.getAllFiles().map(fileData -> {
+                String fileDownloadUri = ServletUriComponentsBuilder
+                        .fromCurrentContextPath()
+                        .path("/file/all/")
+                        .path(fileData.getFileId())
+                        .toUriString();
+
+                return new ResponseData(
                         fileData.getFileId(),
-                       // fileData.getScheduleFileId(),
+                        // fileData.getScheduleFileId(),
                         fileData.getDocName(),
                         fileDownloadUri,
                         fileData.getDocType(),
                         fileData.getData().length);
-        }).collect(Collectors.toList());
-        ResponseData data = new ResponseData();
-        for (int i =0; i < files.size(); i++) {
-           if(files.get(i).getFileId().equals(fileId)){
-            data.setFileId(files.get(i).getFileId());
-            data.setName(files.get(i).getName());
-            data.setUrl(files.get(i).getUrl());
-            data.setType(files.get(i).getType());
-            data.setSize(files.get(i).getSize());
-           }
+            }).collect(Collectors.toList());
+            ResponseData data = new ResponseData();
+            for (int i = 0; i < files.size(); i++) {
+                if (files.get(i).getFileId().equals(fileId)) {
+                    data.setFileId(files.get(i).getFileId());
+                    data.setName(files.get(i).getName());
+                    data.setUrl(files.get(i).getUrl());
+                    data.setType(files.get(i).getType());
+                    data.setSize(files.get(i).getSize());
+                }
+            }
+            return ResponseEntity.status(HttpStatus.OK).body(data);
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Something was wrong!");
         }
-        return ResponseEntity.status(HttpStatus.OK).body(data);
-        
-       } catch (Exception e) {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Something was wrong!");
-       }
-        
+
     }
 
+    // @GetMapping("/all")
+    // public ResponseEntity<?> getListFiles(@RequestParam int scheduleId) {
+
+    // try {
+    // List<String> fileIds = new ArrayList<String>();
+    // List<ScheduleAttachment> list = fileService.getScheduleFiles(scheduleId);
+    // for (int i = 0; i < list.size(); i++) {
+    // fileIds.add(i, list.get(i).getFileId());
+    // }
+
+    // List<ResponseData> files = fileService.getAllFiles().map(fileData -> {
+    // String fileDownloadUri = ServletUriComponentsBuilder
+    // .fromCurrentContextPath()
+    // .path("/file/all")
+    // .path(fileData.getFileId())
+    // .toUriString();
+
+    // return new ResponseData(
+    // fileData.getFileId(),
+    // // fileData.getScheduleFileId(),
+    // fileData.getDocName(),
+    // fileDownloadUri,
+    // fileData.getDocType(),
+    // fileData.getData().length);
+    // }).collect(Collectors.toList());
+    // ResponseData data = new ResponseData();
+    // for (int i = 0; i < files.size(); i++) {
+    // for (int j = 0; j < fileIds.size(); j++) {
+    // if (fileIds.get(j).equals(files.get(i).getFileId())) {
+    // data.setFileId(files.get(i).getFileId());
+    // data.setName(files.get(i).getName());
+    // data.setUrl(files.get(i).getUrl());
+    // data.setType(files.get(i).getType());
+    // data.setSize(files.get(i).getSize());
+    // }
+    // }
+    // }
+    // return ResponseEntity.status(HttpStatus.OK).body(data);
+
+    // } catch (Exception e) {
+    // return
+    // ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Something was
+    // wrong!");
+    // }
+
+    // }
 
     @Async
     @PostMapping("/up")
-    public ResponseEntity<?> upLoadFile (@RequestParam("file") MultipartFile[] file,@RequestParam String title )throws IOException{
+    public ResponseEntity<?> upLoadFile(@RequestParam("file") MultipartFile[] file, @RequestParam String title)
+            throws IOException {
 
         String t = title;
         t = t.substring(1, t.length() - 1);
 
-        System.out.println("Execute method asynchronously - " 
-      + Thread.currentThread().getName());
+        System.out.println("Execute method asynchronously - "
+                + Thread.currentThread().getName());
 
         try {
             Thread.sleep(6000);
-            Schedule sch =schService.findByTitle(t);
+            Schedule sch = schService.findByTitle(t);
 
-            int j =  ((Schedule) sch).getId();
+            int j = ((Schedule) sch).getId();
 
-
-             for (MultipartFile files : file) {
-                 File att = new File();
-                 att.setDocName(files.getOriginalFilename());
-             att.setData(files.getBytes());
-             att.setDocType(files.getContentType());
-             att.setSize(files.getSize());
-            att.setScheduleFileId(sch);
-             fileService.saveAtt(att);
-             }
-        return ResponseEntity.status(HttpStatus.OK).body(file);
+            for (MultipartFile files : file) {
+                File att = new File();
+                att.setDocName(files.getOriginalFilename());
+                att.setData(files.getBytes());
+                att.setDocType(files.getContentType());
+                att.setSize(files.getSize());
+                att.setScheduleFileId(sch);
+                fileService.saveAtt(att);
+            }
+            return ResponseEntity.status(HttpStatus.OK).body(file);
         } catch (Exception e) {
             // TODO: handle exception
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Something was wrong!");
@@ -165,10 +203,13 @@ public class FileController {
     }
 
     @GetMapping("/getAllScheduleFiles")
-    public ResponseEntity<?> getAttachmetns (int scheduleId)throws IOException{
+    public ResponseEntity<?> getAttachmetns(int scheduleId) throws IOException {
 
         try {
             List<ScheduleAttachment> list = fileService.getScheduleFiles(scheduleId);
+            System.out.println(list.get(0).getData());
+            System.out.println(list.get(0).getDocName());
+            System.out.println(list.get(0).getDocType());
             return ResponseEntity.status(HttpStatus.OK).body(list);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);

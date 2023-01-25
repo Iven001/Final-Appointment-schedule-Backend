@@ -6,7 +6,7 @@ public interface ScheduleAttachment {
 
     String getFileId();
 
-    Byte[] getData();
+    byte[] getData();
 
     String getDocName();
 

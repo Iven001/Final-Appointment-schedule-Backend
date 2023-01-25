@@ -4,10 +4,12 @@ import java.io.ByteArrayOutputStream;
 import java.util.zip.Deflater;
 import java.util.zip.Inflater;
 
+import org.springframework.stereotype.Service;
 
+@Service
 public class ImageUtils {
 
-    public static byte[] compressImage (byte[] data) {
+    public static byte[] compressImage(byte[] data) {
 
         Deflater deflater = new Deflater();
         deflater.setLevel(Deflater.BEST_COMPRESSION);
@@ -15,14 +17,15 @@ public class ImageUtils {
         deflater.finish();
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream(data.length);
-        byte[] tmp = new byte[4*1024];
+        byte[] tmp = new byte[4 * 1024];
         while (!deflater.finished()) {
             int size = deflater.deflate(tmp);
             outputStream.write(tmp, 0, size);
-        }try{
+        }
+        try {
             outputStream.close();
-        }catch (Exception ignored) {
-           
+        } catch (Exception ignored) {
+
         }
         return outputStream.toByteArray();
     }
@@ -31,7 +34,7 @@ public class ImageUtils {
         Inflater inflater = new Inflater();
         inflater.setInput(data);
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream(data.length);
-        byte[] tmp = new byte[4*1024];
+        byte[] tmp = new byte[4 * 1024];
         try {
             while (!inflater.finished()) {
                 int count = inflater.inflate(tmp);

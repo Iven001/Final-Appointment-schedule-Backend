@@ -81,12 +81,12 @@ public class UserController {
             @RequestParam(value = "end") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate end,
             @RequestParam int userId) {
 
-                LocalDate now = LocalDate.now();
+        LocalDate now = LocalDate.now();
 
         try {
             List<WeeklyViewInter> list = userService.getUserWeeklyViews(userId, start, end);
             List<WeeklyView> weekList = new ArrayList<WeeklyView>();
-            for (int i=0; i < list.size() ; i++) {
+            for (int i = 0; i < list.size(); i++) {
                 WeeklyView dto = new WeeklyView();
                 dto.setUserId(list.get(i).getUserId());
                 dto.setScheduleId(list.get(i).getScheduleId());
@@ -97,13 +97,13 @@ public class UserController {
                 dto.setEnd_time(list.get(i).getEnd_time());
                 dto.setStatus(list.get(i).getStatus());
                 dto.setPrivacy(list.get(i).getPrivacy());
-                
-                weekList.add(i, dto);        
-           }
-            
-           //weekDto.setUserId(list.get)
-            for (WeeklyView d : weekList){
-                if (d.getStart().isBefore(now)){
+
+                weekList.add(i, dto);
+            }
+
+            // weekDto.setUserId(list.get)
+            for (WeeklyView d : weekList) {
+                if (d.getStart().isBefore(now)) {
                     d.setStatus("expired");
                 }
             }
@@ -197,8 +197,8 @@ public class UserController {
 
                     }
                 }
-                for (DailyViewDto d : dtoList){
-                    if (d.getStart().isBefore(now)){
+                for (DailyViewDto d : dtoList) {
+                    if (d.getStart().isBefore(now)) {
                         d.setStatus("expired");
                     }
                 }
@@ -225,8 +225,6 @@ public class UserController {
         }
     }
 
-    
-
     @GetMapping("/serchUserProfile") // search for only userdetails with userId
     public ResponseEntity<?> searchProfile(@RequestParam Integer userId) {
 
@@ -240,8 +238,6 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
-
-
 
     // Dejavu add
     @GetMapping("/serchUsesDetails") // search for only userdetails with userId
@@ -312,10 +308,9 @@ public class UserController {
 
             BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
             if (encoder.matches(dto.getOldPassword(), ps)) {
-                //user.setPassword(dto.getNewPassword());
+                // user.setPassword(dto.getNewPassword());
                 user.setPassword(getEncodedPassword(dto.getNewPassword()));
-            } 
-            else {
+            } else {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Check Your User Information!!");
             }
             return ResponseEntity.status(HttpStatus.OK).body(userService.saveUser(user));
@@ -351,7 +346,7 @@ public class UserController {
             if (emp.getPosition().equals("Team Leader") ||
                     emp.getPosition().equals("Manager")) {
                 roleName = "organizer";
-            } else if(emp.getPosition().equals("Admin")){
+            } else if (emp.getPosition().equals("Admin")) {
                 roleName = "admin";
             } else {
                 roleName = "member";
@@ -378,7 +373,6 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.OK).body(user);
         }
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-
 
     }
 
