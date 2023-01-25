@@ -4,14 +4,15 @@ import com.project.appointment_schedule_management.model.Schedule;
 
 import lombok.Data;
 
-@Data
+
 public class Filedto {
 
     private String fileId;
     private String docName;
     private String docType;
     private byte[] data;
-     private Schedule scheduleFileId;
+     private int scheduleId;
+     private int cuurentUserId;
     public String getFileId() {
         return fileId;
     }
@@ -36,14 +37,22 @@ public class Filedto {
     public void setData(byte[] data) {
         this.data = data;
     }
-    public Schedule getScheduleFileId() {
-        return scheduleFileId;
+    public int getScheduleId() {
+        return scheduleId;
     }
-    public void setScheduleFileId(Schedule scheduleFileId) {
-        this.scheduleFileId = scheduleFileId;
+    public void setScheduleId(int scheduleId) {
+        this.scheduleId = scheduleId;
     }
-
+    public int getCuurentUserId() {
+        return cuurentUserId;
+    }
+    public void setCuurentUserId(int cuurentUserId) {
+        this.cuurentUserId = cuurentUserId;
+    }
 
      
+
+
+    
     
 }

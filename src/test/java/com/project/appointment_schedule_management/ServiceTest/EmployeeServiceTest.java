@@ -1,4 +1,4 @@
-package com.project.appointment_schedule_management.serviceTest;
+package com.project.appointment_schedule_management.ServiceTest;
 
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

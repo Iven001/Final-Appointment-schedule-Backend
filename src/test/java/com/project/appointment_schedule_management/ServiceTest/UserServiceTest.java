@@ -1,4 +1,4 @@
-package com.project.appointment_schedule_management.serviceTest;
+package com.project.appointment_schedule_management.ServiceTest;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -151,18 +151,6 @@ public class UserServiceTest {
 			List<InterSchedule> actual = userRepository.getAllUserScheduleMembers();
 			assertEquals(excepted, actual);
 		}
-
-
-
-
-
-
-
-
-
-
-
-
-	    
+ 
 	}
 

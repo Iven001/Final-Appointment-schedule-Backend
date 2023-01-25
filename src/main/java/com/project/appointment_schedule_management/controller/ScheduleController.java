@@ -41,13 +41,6 @@ import com.project.appointment_schedule_management.utils.DeleteScheduleMail;
 import com.project.appointment_schedule_management.utils.InviteMail;
 import com.project.appointment_schedule_management.utils.RemoveUserMail;
 
-import net.sf.jasperreports.engine.JasperCompileManager;
-import net.sf.jasperreports.engine.JasperExportManager;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
-
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/schedule")

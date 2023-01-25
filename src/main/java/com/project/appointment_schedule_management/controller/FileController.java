@@ -11,9 +11,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,6 +27,7 @@ import com.project.appointment_schedule_management.model.Schedule;
 import com.project.appointment_schedule_management.Interface.ScheduleAttachment;
 import com.project.appointment_schedule_management.dao.FileRepository;
 import com.project.appointment_schedule_management.dao.ScheduleRepository;
+import com.project.appointment_schedule_management.dto.Filedto;
 import com.project.appointment_schedule_management.dto.ResponseData;
 import com.project.appointment_schedule_management.dto.ResponseMessage;
 import com.project.appointment_schedule_management.service.FileService;
@@ -174,5 +177,24 @@ public class FileController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
 
+    }
+
+    @DeleteMapping("/deleteFile")
+    public ResponseEntity<?> deleteFile (@RequestBody Filedto dto) {
+
+        try {
+            Schedule schedule = schService.findByScheduleId(dto.getScheduleId());
+
+            if (schedule!=null && schedule.getOwnerId()==dto.getCuurentUserId() ) {
+                fileService.deleteFile(dto.getFileId());
+                return ResponseEntity.status(HttpStatus.OK).body(schedule);
+            }else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null); 
+            }
+
+            
+            
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);        }
     }
 }

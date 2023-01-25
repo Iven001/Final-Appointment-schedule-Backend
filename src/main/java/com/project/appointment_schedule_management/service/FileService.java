@@ -53,6 +53,10 @@ public class FileService {
             return list;
         }
 
+        public void deleteFile (String id) {
+            fileRepository.deleteById(id);
+        }
+
 
 }
 
