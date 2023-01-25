@@ -5,17 +5,25 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.project.appointment_schedule_management.Interface.EmployeeInter;
 import com.project.appointment_schedule_management.dao.EmployeeRepository;
 import com.project.appointment_schedule_management.model.Employee;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
 
-    @Autowired
-    EmployeeRepository empRepo;
 
     @Autowired
     Employee emp;
+
+    private final EmployeeRepository empRepo;
+    
+
+    @Autowired
+    public EmployeeServiceImpl(EmployeeRepository empRepo) {
+        this.empRepo = empRepo;
+    }
+
 
     @Override
     public Employee getEmployeeById(int employeeId) {
@@ -41,6 +49,12 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public Employee getEmployeeByEmployeeName(String empName) {
        return empRepo.findByEmployeeName(empName);
+    }
+
+    @Override
+    public List<EmployeeInter> findByEmployee(int empId, String empName) {
+        List<EmployeeInter> list = empRepo.findByEmployee(empId, empName);
+        return list;
     }
 
 }

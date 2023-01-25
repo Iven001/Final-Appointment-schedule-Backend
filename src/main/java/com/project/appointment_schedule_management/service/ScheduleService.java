@@ -1,5 +1,6 @@
 package com.project.appointment_schedule_management.service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import com.project.appointment_schedule_management.Interface.InterSchedule;
@@ -26,6 +27,8 @@ public interface ScheduleService {
    List<AllScheduleMember> getAllScheduleMember();
 
    Schedule save(Schedule schedule);
+
+//    List<InterSchedule> getDailyReport(int userId, LocalDate start);
  
 
 }

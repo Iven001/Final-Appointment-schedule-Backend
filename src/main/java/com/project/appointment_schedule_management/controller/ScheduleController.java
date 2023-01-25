@@ -2,12 +2,15 @@ package com.project.appointment_schedule_management.controller;
 
 import java.io.UnsupportedEncodingException;
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import javax.mail.MessagingException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -20,6 +23,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.project.appointment_schedule_management.Interface.InterSchedule;
 import com.project.appointment_schedule_management.dao.FileRepository;
 import com.project.appointment_schedule_management.dao.ScheduleRepository;
 import com.project.appointment_schedule_management.dao.UserRepository;
@@ -71,22 +76,7 @@ public class ScheduleController {
     public ResponseEntity<?> createRegister(@RequestBody SchduleDto sch)
             throws UnsupportedEncodingException, MessagingException {
 
-                //Schedule schedule = schService.findByScheduleId(dto.getScheduleId());
-            // User us = userService.getUserById(sch.getCreateUser());
-
-            // // List<User> users = dto.getMembersList();
-            // List<User> userList = sch.getMembersList();
-            // userList.add(us);
-            
-
-        // List<User> members = sch.getMembersList();
-        // User createUser = userService.findById(sch.getCreateUser());
-        // String createUserName = createUser.getUname();
-        // for (User u : members) {
-        //     if(u.getUserId() != createUser.getUserId()){
-        //         emailTask.sendEmail(u.getMail(), sch , createUserName);
-        //     }
-        // }
+               
                     schService.saveSchedule(sch);
         try {
             // schService.saveSchedule(sch);
@@ -304,7 +294,57 @@ public class ScheduleController {
     }
 
 
+    // @GetMapping("/dailyReport")
+    // public ResponseEntity<?> DailyReport (@RequestParam int userId,@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)LocalDate start) {
+    //     try{
+    //                 List <InterSchedule> schedules = schService.getDailyReport(userId, start);
+    //                 String reportPath = "src\\main\\resources";
+    //                 JasperReport jReport = JasperCompileManager.compileReport(reportPath + "\\sch.jrxml");
+    //                 JRBeanCollectionDataSource jrBeanCollectionDataSource = new JRBeanCollectionDataSource(schedules);
+    //                 Map<String, Object> parameters = new HashMap<>();
+    //                 parameters.put("schedules", schedules);
+    //                 JasperPrint jasperprint = JasperFillManager.fillReport(jReport, parameters, jrBeanCollectionDataSource);
+    //                 JasperExportManager.exportReportToPdfFile(jasperprint, "C:\\Downloads\\Report.pdf");
+    //                 System.out.println("Done");
+    //                 return ResponseEntity.status(HttpStatus.OK).body(schedules);
+    //             }catch(Exception e){
+    //                 System.out.print(e.getMessage());
+    //                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null); 
+    //             }
 
-    
 
-}
+    //         }
+    // @GetMapping("/dailyReport")
+    // public ResponseEntity<?> getDailyReport(
+    //  @RequestParam int userId, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)LocalDate start)
+    //         throws Exception, IOException{
+
+    //             System.out.println("test");
+
+    //             try {
+    //                 String path = System.getProperty("java.class.path").split(",")[0].replace("src\\main\\resources\\Files", "").replace("src\\main\\resources\\Files", "")
+    //             + "src\\main\\resources\\DailySchedule.jrxml";
+
+    //             List<InterSchedule> exportFile = schRepo.dailyReport(userId, start);
+    //             System.out.println("1. id"+userId+"date : "+start);
+    //             File downloadFile = new File(path + exportFile);
+    //             System.out.println("2. id"+userId+"date : "+start);
+    //             InputStreamResource resouce = new InputStreamResource(new FileInputStream(downloadFile));
+    //             System.out.println("3. id"+userId+"date : "+start);
+    //             HttpHeaders header = new HttpHeaders();
+    //             header.add(HttpHeaders.CONTENT_DISPOSITION, "filename = "+ downloadFile.getName());
+    //     return ResponseEntity.ok()
+    //     // .body("ok");
+    //             .headers(header)
+    //             .contentLength(downloadFile.length())
+    //             .contentType(MediaType.parseMediaType(MediaType.APPLICATION_OCTET_STREAM_VALUE))
+    //             .body(resouce);
+       
+    //             } catch (Exception e) {
+    //                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+    //             }
+
+
+        }
+
+
