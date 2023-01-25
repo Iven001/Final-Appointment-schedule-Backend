@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.project.appointment_schedule_management.Interface.EmployeeInter;
 import com.project.appointment_schedule_management.dao.EmployeeRepository;
 import com.project.appointment_schedule_management.dto.EmployeeDto;
 import com.project.appointment_schedule_management.model.Employee;
@@ -137,6 +138,18 @@ public class EmployeeController {
         try {
             Employee emp = empService.getEmployeeByEmployeeName(empName);
             return ResponseEntity.status(HttpStatus.OK).body(emp);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+    @GetMapping("/searchEmployee")
+    public ResponseEntity<?> searchEmployee (@RequestParam(required = false) int empId,@RequestParam(required = false) String empName) {
+        try {
+          //  String name = Integer.toString(empName);
+            List<EmployeeInter> list = empService.findByEmployee(empId, empName);
+            return ResponseEntity.status(HttpStatus.OK).body(list);
+            
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
