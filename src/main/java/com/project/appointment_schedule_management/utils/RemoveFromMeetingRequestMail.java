@@ -32,7 +32,7 @@ public class RemoveFromMeetingRequestMail {
 		String subject = "<span>The following user -</span>"+"<b>"+userName+"</b>"+"<span> has requested to exclude him from the follwing meeting</span>";
 
 		String content = "<span>Meeting -</span>"+"<b>"+schTitle+"</b>"
-                +"<span>Reason to resign -</span>"+"<b>"+reasonToReques+"</b>"
+                +"<span>Reason to resign -</span>"+"<b>"+reasonToRequest+"</b>"
                 + "<span>Click this to check your appointments </span>" + "<span><b><a href=\"" + "http://localhost:4200/login"
                 + "\">to log in</a><b></spanss>";
 				

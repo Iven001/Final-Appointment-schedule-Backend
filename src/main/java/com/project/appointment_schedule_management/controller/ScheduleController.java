@@ -308,13 +308,14 @@ public class ScheduleController {
                 User organizer = userService.getUserById(dto.getOwnerId());
                 User requestUser = userService.getUserById(dto.getUserId());
                 requestMail.sendEmail(organizer.getMail(),dto.getStatus(),schedule.getTitle(),requestUser.getUname());
-                return ResponseEntity.status(HttpStatus.OK).body(null);
+                return ResponseEntity.status(HttpStatus.OK).body(schedule);
             }
 
             
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
+        return null;
 
     }
 
