@@ -39,6 +39,7 @@ import com.project.appointment_schedule_management.service.ScheduleService;
 import com.project.appointment_schedule_management.service.UserService;
 import com.project.appointment_schedule_management.utils.DeleteScheduleMail;
 import com.project.appointment_schedule_management.utils.InviteMail;
+import com.project.appointment_schedule_management.utils.RemoveFromMeetingRequestMail;
 import com.project.appointment_schedule_management.utils.RemoveUserMail;
 
 @CrossOrigin(origins = "http://localhost:4200")
@@ -54,6 +55,9 @@ public class ScheduleController {
 
     @Autowired
     private RemoveUserMail removeUserMail;
+
+    @Autowired
+    private RemoveFromMeetingRequestMail requestMail;
 
     private final ScheduleService schService;
     private final ScheduleRepository schRepo;
@@ -249,6 +253,8 @@ public class ScheduleController {
             Schedule sch = schService.findByScheduleId(dto.getScheduleId());
 
             if (sch!=null && sch.getOwnerId()==dto.getCurrentUserId()) {
+                    sch.setUpdatetime(updateDate);
+                    sch.setUpdateUser(dto.getCurrentUserId());
                     sch.setStatus("finished");
             }else{
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Check Ur userDetails");
@@ -287,6 +293,25 @@ public class ScheduleController {
             //schService.save(schedule);
             return ResponseEntity.status(HttpStatus.OK).body(schedule);
 
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+
+    }
+
+    @PutMapping("/request")
+    public ResponseEntity<?> requestToQuit (@RequestBody ChangeOwnerDto dto) {
+
+        try {
+            Schedule schedule = schService.findByScheduleId(dto.getScheduleId());
+            if (schedule!=null) {
+                User organizer = userService.getUserById(dto.getOwnerId());
+                User requestUser = userService.getUserById(dto.getUserId());
+                requestMail.sendEmail(organizer.getMail(),dto.getStatus(),schedule.getTitle(),requestUser.getUname());
+                return ResponseEntity.status(HttpStatus.OK).body(null);
+            }
+
+            
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
