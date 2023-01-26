@@ -221,21 +221,21 @@ public class FileController {
     }
 
     @DeleteMapping("/deleteFile")
-    public ResponseEntity<?> deleteFile (@RequestBody Filedto dto) {
+    public ResponseEntity<?> deleteFile(@RequestParam String fileId, @RequestParam int scheduleId,
+            @RequestParam int cuurentUserId) {
 
         try {
-            Schedule schedule = schService.findByScheduleId(dto.getScheduleId());
+            Schedule schedule = schService.findByScheduleId(scheduleId);
 
-            if (schedule!=null && schedule.getOwnerId()==dto.getCuurentUserId() ) {
-                fileService.deleteFile(dto.getFileId());
+            if (schedule != null && schedule.getOwnerId() == cuurentUserId) {
+                fileService.deleteFile(fileId);
                 return ResponseEntity.status(HttpStatus.OK).body(schedule);
-            }else {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null); 
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
             }
 
-            
-            
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);        }
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
 }
