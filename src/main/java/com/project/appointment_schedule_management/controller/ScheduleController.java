@@ -32,6 +32,7 @@ import com.project.appointment_schedule_management.dto.AddMembers;
 import com.project.appointment_schedule_management.dto.AllScheduleMember;
 import com.project.appointment_schedule_management.dto.ChangeOwnerDto;
 import com.project.appointment_schedule_management.dto.SchduleDto;
+import com.project.appointment_schedule_management.dto.ScheduleEdit;
 import com.project.appointment_schedule_management.model.Schedule;
 import com.project.appointment_schedule_management.model.User;
 import com.project.appointment_schedule_management.service.FileService;
@@ -190,11 +191,12 @@ public class ScheduleController {
             String schTitle = sch.getTitle();
 
             if (sch != null) {
-                if (sch.getCreateUser() == dto.getCurrentUserId() || sch.getOwnerId() == dto.getOwnerId()) {
-                    sch.setDeleteUser(dto.getCurrentUserId());
-                    sch.setIsDelete(dto.getIsDelete());
-                    sch.setStatus("isDelete");
-                    schService.save(sch);
+                if (sch.getCreateUser() == dto.getCurrentUserId() || sch.getOwnerId() == dto.getCurrentUserId()) {
+//                    sch.setDeleteUser(dto.getCurrentUserId());
+//                    sch.setIsDelete(dto.getIsDelete());
+//                    sch.setStatus("isDelete");
+                	
+                    schService.deleteSchedule(dto.getScheduleId());
 
                     for (User u : members){
                         deleteMail.sendEmail(u.getMail(), schTitle);
@@ -310,8 +312,29 @@ public class ScheduleController {
                 requestMail.sendEmail(organizer.getMail(),dto.getStatus(),schedule.getTitle(),requestUser.getUname());
                 return ResponseEntity.status(HttpStatus.OK).body(schedule);
             }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+        return null;
 
-            
+    }
+    
+    @PutMapping("/editTitleAndDs")
+    public ResponseEntity<?> editTitleAndDs (@RequestBody ScheduleEdit dto) {
+    	
+        LocalDate now = LocalDate.now();
+
+
+        try {
+            Schedule schedule = schService.findByScheduleId(dto.getScheduleId());
+            if (schedule!=null || schedule.getOwnerId()==dto.getCurrentUserId()) {
+            	schedule.setUpdateUser(dto.getCurrentUserId());
+            	schedule.setUpdatetime(now);
+            	schedule.setTitle(dto.getTitle());
+            	schedule.setDescription(dto.getDescription());
+                schService.save(schedule);
+                return ResponseEntity.status(HttpStatus.OK).body(schedule);
+            }
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
