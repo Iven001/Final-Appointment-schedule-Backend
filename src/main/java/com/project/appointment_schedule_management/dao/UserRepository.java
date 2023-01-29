@@ -92,7 +92,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
         
         @Query(value="Select u.user_id as userId,u.biography as biography,u.emp_id as empId,u.img_id as imgId,u.mail as mail,u.nick_name as nickName,u.password as password,u.reset_password_token as resetPasswordToken,u.team as team,u.name as uname,t.team_name as teamName,d.department_name as departmentName " +
         	    "From appointment.user u,appointment.team t,appointment.department d " +
-        	    "Where u.team=t.team_id and u.user_id=u.user_id",nativeQuery=true)
+        	    "Where u.team=t.team_id and u.user_id=u.user_id and t.department=d.department_id",nativeQuery=true)
         	    List<UserInter> getUserInfo ();
         
         
