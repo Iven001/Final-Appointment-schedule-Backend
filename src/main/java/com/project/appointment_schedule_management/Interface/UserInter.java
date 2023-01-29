@@ -13,5 +13,6 @@ public interface UserInter {
 	String getBiography();
 	String getNickName();
 	String getTeamName();
+	String getDepartmentName();
 
 }

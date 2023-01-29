@@ -90,10 +90,16 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
         public User findByEmpId(int empId);
         
-        @Query(value="Select u.user_id as userId,u.biography as biography,u.emp_id as empId,u.img_id as imgId,u.mail as mail,u.nick_name as nickName,u.password as password,u.reset_password_token as resetPasswordToken,u.team as team,u.name as uname,t.team_name as teamName " +
-        	    "From appointment.user u,appointment.team t " +
+        @Query(value="Select u.user_id as userId,u.biography as biography,u.emp_id as empId,u.img_id as imgId,u.mail as mail,u.nick_name as nickName,u.password as password,u.reset_password_token as resetPasswordToken,u.team as team,u.name as uname,t.team_name as teamName,d.department_name as departmentName " +
+        	    "From appointment.user u,appointment.team t,appointment.department d " +
         	    "Where u.team=t.team_id and u.user_id=u.user_id",nativeQuery=true)
         	    List<UserInter> getUserInfo ();
+        
+        
+//        @Query(value = "SELECT u.user_id as userId,u.name as uname,s.schedule_id as scheduleId,s.start_date as start,s.end_date as end,s.start_time as start_time,s.end_time as end_time,s.description as description,s.place as place,s.privacy as privacy,s.status as status,s.title as title,s.is_delete as isDelete,s.owner as ownerId "
+//                +
+//                "FROM appointment.user u, appointment.schedule s, appointment.users_schedule us WHERE u.user_id=us.user_id and s.schedule_id=us.schedule_id", nativeQuery = true)
+//        List<InterSchedule> getAllUser();// getAll User from schedule
 
 }
 
