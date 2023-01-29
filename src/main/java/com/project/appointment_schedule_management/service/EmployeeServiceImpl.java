@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.project.appointment_schedule_management.Interface.EmployeeInfo;
 import com.project.appointment_schedule_management.Interface.EmployeeInter;
 import com.project.appointment_schedule_management.dao.EmployeeRepository;
 import com.project.appointment_schedule_management.model.Employee;
@@ -56,5 +57,12 @@ public class EmployeeServiceImpl implements EmployeeService {
         List<EmployeeInter> list = empRepo.findByEmployee(empId, empName);
         return list;
     }
+
+
+	@Override
+	public List<EmployeeInfo> getEmployeeInfo() {
+		List<EmployeeInfo> list = empRepo.getEmployeeInfo();
+		return list;
+	}
 
 }

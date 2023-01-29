@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.project.appointment_schedule_management.Interface.EmployeeInfo;
 import com.project.appointment_schedule_management.Interface.EmployeeInter;
 import com.project.appointment_schedule_management.dao.EmployeeRepository;
 import com.project.appointment_schedule_management.dto.EmployeeDto;
@@ -154,4 +155,17 @@ public class EmployeeController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
+    
+    @GetMapping("/getEmployees")
+    public ResponseEntity<?> getEmployeeInfo () {
+        try {
+ 
+            List<EmployeeInfo> list = empService.getEmployeeInfo();
+            return ResponseEntity.status(HttpStatus.OK).body(list);
+            
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
 }
