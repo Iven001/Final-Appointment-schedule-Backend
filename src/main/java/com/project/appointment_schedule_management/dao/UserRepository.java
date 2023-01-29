@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import com.project.appointment_schedule_management.Interface.InterSchedule;
 import com.project.appointment_schedule_management.Interface.UserDetails;
+import com.project.appointment_schedule_management.Interface.UserInter;
 import com.project.appointment_schedule_management.Interface.UserProfile;
 import com.project.appointment_schedule_management.Interface.UserSchedule;
 import com.project.appointment_schedule_management.Interface.WeeklyViewInter;
@@ -88,6 +89,11 @@ public interface UserRepository extends JpaRepository<User, Integer> {
         public User findByMail(String email);
 
         public User findByEmpId(int empId);
+        
+        @Query(value="Select u.user_id as userId,u.biography as biography,u.emp_id as empId,u.img_id as imgId,u.mail as mail,u.nick_name as nickName,u.password as password,u.reset_password_token as resetPasswordToken,u.team as team,u.name as uname,t.team_name as teamName " +
+        	    "From appointment.user u,appointment.team t " +
+        	    "Where u.team=t.team_id and u.user_id=u.user_id",nativeQuery=true)
+        	    List<UserInter> getUserInfo ();
 
 }
 

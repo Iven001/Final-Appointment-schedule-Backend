@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.project.appointment_schedule_management.Interface.InterSchedule;
 import com.project.appointment_schedule_management.Interface.UserDetails;
+import com.project.appointment_schedule_management.Interface.UserInter;
 import com.project.appointment_schedule_management.Interface.UserProfile;
 import com.project.appointment_schedule_management.Interface.UserSchedule;
 import com.project.appointment_schedule_management.Interface.WeeklyViewInter;
@@ -67,6 +68,8 @@ public interface UserService {
 	List<InterSchedule> getAllUserScheduleMembers();
 
 	List<WeeklyViewInter> getUserWeeklyViews(int userId,LocalDate start,LocalDate end);
+	
+	List<UserInter> getUserInfo ();
 
 	
 }

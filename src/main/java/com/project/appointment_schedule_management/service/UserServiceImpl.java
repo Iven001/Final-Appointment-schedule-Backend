@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.project.appointment_schedule_management.Interface.InterSchedule;
 import com.project.appointment_schedule_management.Interface.UserDetails;
+import com.project.appointment_schedule_management.Interface.UserInter;
 import com.project.appointment_schedule_management.Interface.UserProfile;
 import com.project.appointment_schedule_management.Interface.UserSchedule;
 import com.project.appointment_schedule_management.Interface.WeeklyViewInter;
@@ -185,11 +186,12 @@ public class UserServiceImpl implements UserService {
 		return userRepo.findByEmpId(empId);
 	}
 
-	// @Override
-	// public List<UserSchedule> eventDetails(Integer userId, String title, LocalDate start, LocalTime starttime) {
-	// 	// TODO Auto-generated method stub
-	// 	return null;
-	// }
+	@Override
+	public List<UserInter> getUserInfo() {
+		List<UserInter> list = userRepo.getUserInfo();
+		return list;
+	}
+
 
 
 }

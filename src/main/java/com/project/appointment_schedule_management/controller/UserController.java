@@ -74,6 +74,18 @@ public class UserController {
         }
 
     }
+    
+    @GetMapping("/getUsers")
+    public ResponseEntity<?> getUsers() {
+
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(userService.getUserInfo());
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+
+    }
 
     @GetMapping("/userWeeklyView")
     public ResponseEntity<?> getUserWeeklyView(
