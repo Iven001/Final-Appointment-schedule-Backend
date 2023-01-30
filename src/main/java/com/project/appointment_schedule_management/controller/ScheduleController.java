@@ -282,8 +282,14 @@ public class ScheduleController {
 
        
             User u = userService.getUserById(dto.getAddUserId());
+            
+            User currentUser = userService.getUserById(dto.getCurrentUserId());
+            
+            SchduleDto schDto = new SchduleDto();
+            schDto.setStart(schedule.getStart());
+            schDto.setStart_time(schedule.getStart_time());
+            schDto.setPlace(schedule.getPlace());
 
-            // List<User> users = dto.getMembersList();
             List<User> userList = dto.getMembersList();
             userList.add(u);
             if (schedule.getOwnerId() == dto.getCurrentUserId()) {
@@ -291,6 +297,8 @@ public class ScheduleController {
                 schedule.setUpdatetime(now);
                 schedule.setMembers(userList);
                 schService.save(schedule);
+                
+                emailTask.sendEmail(u.getMail(), schDto, currentUser.getUname());
             }
             //schService.save(schedule);
             return ResponseEntity.status(HttpStatus.OK).body(schedule);
