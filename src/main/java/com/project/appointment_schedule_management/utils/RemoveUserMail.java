@@ -32,6 +32,7 @@ public class RemoveUserMail {
 		String subject = "Dear User , you have been successfully removed from the following meeting.";
 
 		String content = "<span>Meeting -</span>"+"<b>"+schTitle+"</b>"
+				+"<p>"+"</p>"
                 + "<span>Click this to check your appointments </span>" + "<span><b><a href=\"" + "http://localhost:4200/login"
                 + "\">to log in</a><b></spanss>";
 				
