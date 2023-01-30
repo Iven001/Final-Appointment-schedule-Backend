@@ -1,61 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.20.0.final using JasperReports Library version 6.20.0-2bc7ab61c56f459e8176eb05c7705e145cd400ad  -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="sch" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6730cc4b-3804-4aeb-b23c-22d75754e033">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="schTest" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="a2d17b9c-9dcf-40fe-93c0-3466d60c9ec6">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="AssignmentSchedule"/>
 	<queryString language="SQL">
-		<![CDATA[Select s.start_time,s.end_time,s.title,s.description,s.privacy,s.place
-From appointment.schedule s , appointment.user u , appointment.users_schedule us
-Where s.schedule_id=us.schedule_id and u.user_id=us.user_id]]>
+
 	</queryString>
 	<field name="title" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.name" value="title"/>
-		<property name="com.jaspersoft.studio.field.label" value="title"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="schedule"/>
+
 	</field>
-	<field name="start_date" class="java.sql.Date">
-		<property name="com.jaspersoft.studio.field.name" value="start_date"/>
-		<property name="com.jaspersoft.studio.field.label" value="start_date"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="schedule"/>
+	<field name="start_time" class="java.time.LocalTime">
+
 	</field>
-	<field name="end_date" class="java.sql.Date">
-		<property name="com.jaspersoft.studio.field.name" value="end_date"/>
-		<property name="com.jaspersoft.studio.field.label" value="end_date"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="schedule"/>
-	</field>
-	<field name="start_time" class="java.sql.Time">
-		<property name="com.jaspersoft.studio.field.name" value="start_time"/>
-		<property name="com.jaspersoft.studio.field.label" value="start_time"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="schedule"/>
-	</field>
-	<field name="end_time" class="java.sql.Time">
-		<property name="com.jaspersoft.studio.field.name" value="end_time"/>
-		<property name="com.jaspersoft.studio.field.label" value="end_time"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="schedule"/>
-	</field>
-	<field name="privacy" class="java.lang.Boolean">
-		<property name="com.jaspersoft.studio.field.name" value="privacy"/>
-		<property name="com.jaspersoft.studio.field.label" value="privacy"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="schedule"/>
+	<field name="end_time" class="java.time.LocalTime">
+
 	</field>
 	<field name="description" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.name" value="description"/>
-		<property name="com.jaspersoft.studio.field.label" value="description"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="schedule"/>
+
 	</field>
 	<field name="place" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.name" value="place"/>
-		<property name="com.jaspersoft.studio.field.label" value="place"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="schedule"/>
+
 	</field>
+	<field name="status" class="java.lang.String">
+
+	</field>
+	<!-- <field name="owner" class="java.lang.Integer">
+
+	</field> -->
 	<group name="title">
 		<groupExpression><![CDATA[$F{title}]]></groupExpression>
-	</group>
-	<group name="start_date">
-		<groupExpression><![CDATA[$F{start_date}]]></groupExpression>
-	</group>
-	<group name="end_date">
-		<groupExpression><![CDATA[$F{end_date}]]></groupExpression>
 	</group>
 	<group name="start_time">
 		<groupExpression><![CDATA[$F{start_time}]]></groupExpression>
@@ -63,61 +36,42 @@ Where s.schedule_id=us.schedule_id and u.user_id=us.user_id]]>
 	<group name="end_time">
 		<groupExpression><![CDATA[$F{end_time}]]></groupExpression>
 	</group>
-	<group name="privacy">
-		<groupExpression><![CDATA[$F{privacy}]]></groupExpression>
-	</group>
 	<group name="description">
 		<groupExpression><![CDATA[$F{description}]]></groupExpression>
 	</group>
 	<group name="place">
 		<groupExpression><![CDATA[$F{place}]]></groupExpression>
 	</group>
+	<group name="status">
+		<groupExpression><![CDATA[$F{status}]]></groupExpression>
+	</group>
+	<!-- <group name="owner">
+		<groupExpression><![CDATA[$F{owner}]]></groupExpression>
+	</group> -->
 	<background>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
 		<band height="79" splitType="Stretch">
 			<staticText>
-				<reportElement x="95" y="0" width="210" height="25" uuid="2604872c-0467-4e80-a3a1-db03b0a584f5">
-					<property name="local_mesure_unitheight" value="pixel"/>
-					<property name="com.jaspersoft.studio.unit.height" value="px"/>
-				</reportElement>
-				<textElement>
-					<font size="19" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Dir Ace Technology Ltd]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="95" y="25" width="205" height="15" uuid="844e5947-043e-45f3-872c-52c8aed64d24"/>
-				<text><![CDATA[Floor 4 , Phase 3]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="95" y="40" width="205" height="15" uuid="b79db375-1d40-49e1-994a-ce1afac8789f"/>
-				<text><![CDATA[Hlaing Township, Yangon, Myanmar]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="95" y="55" width="205" height="15" uuid="349f238b-4b51-46ec-ad7c-701db6768990"/>
-				<text><![CDATA[Ph no  -  01-521 127]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="415" y="10" width="50" height="20" uuid="325b7de5-c45e-4d4f-b081-f92a5151c4b8"/>
+				<reportElement x="415" y="10" width="50" height="20" uuid="cfe85464-b787-4c24-b1dd-c836d2868163"/>
 				<box rightPadding="4"/>
 				<textElement textAlignment="Right"/>
 				<text><![CDATA[Date:]]></text>
 			</staticText>
 			<textField pattern="EEEEE dd MMMMM yyyy">
-				<reportElement x="465" y="10" width="84" height="20" uuid="222060e8-115d-46b8-af73-d1af5c9ae0c0"/>
+				<reportElement x="465" y="10" width="84" height="20" uuid="87b0f229-b822-48cf-93e8-28c4434f75dc"/>
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>
 	<pageHeader>
-		<band splitType="Stretch"/>
+		<band height="2" splitType="Stretch"/>
 	</pageHeader>
 	<columnHeader>
-		<band height="50" splitType="Stretch">
+		<band height="35" splitType="Stretch">
 			<staticText>
-				<reportElement x="26" y="20" width="94" height="30" uuid="f1bd6174-3ca3-4cb5-a060-4470bbb612da"/>
+				<reportElement x="0" y="4" width="110" height="30" uuid="eaf80849-9948-4198-9891-d55d9d901804"/>
 				<box>
 					<pen lineWidth="1.0" lineStyle="Solid"/>
 				</box>
@@ -125,47 +79,7 @@ Where s.schedule_id=us.schedule_id and u.user_id=us.user_id]]>
 				<text><![CDATA[Meeting Title]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="120" y="20" width="50" height="30" uuid="3bfdeebb-580f-42b7-b8a0-aa6dee733443"/>
-				<box>
-					<pen lineWidth="1.0" lineStyle="Solid"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<text><![CDATA[Start Date]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="170" y="20" width="46" height="30" uuid="11015719-225b-4710-9fb3-16c66c3d8fdc"/>
-				<box>
-					<pen lineWidth="1.0" lineStyle="Solid"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<text><![CDATA[End Date]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="216" y="20" width="50" height="30" uuid="cc3fea23-d993-4abb-aa25-3d250908f9f5"/>
-				<box>
-					<pen lineWidth="1.0" lineStyle="Solid"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<text><![CDATA[Start Time]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="266" y="20" width="50" height="30" uuid="ca794f76-734e-466a-9fd6-55dd9764b2c7"/>
-				<box>
-					<pen lineWidth="1.0" lineStyle="Solid"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<text><![CDATA[End Time]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="316" y="20" width="60" height="30" uuid="e25bbbec-ea1a-455a-b318-9eb95c42d2b2"/>
-				<box>
-					<pen lineWidth="1.0" lineStyle="Solid"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<text><![CDATA[Privacy]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="376" y="20" width="94" height="30" uuid="1705508a-c74a-4be6-9562-0f9a15160f80"/>
+				<reportElement x="110" y="4" width="80" height="30" uuid="c9901bfd-672a-45e4-8560-5982adf9017b"/>
 				<box>
 					<pen lineWidth="1.0" lineStyle="Solid"/>
 				</box>
@@ -173,21 +87,50 @@ Where s.schedule_id=us.schedule_id and u.user_id=us.user_id]]>
 				<text><![CDATA[Description]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="470" y="20" width="49" height="30" uuid="c86c4d5b-11d5-4666-9b0e-549d53ac29c8"/>
+				<reportElement x="346" y="4" width="92" height="30" uuid="be9f5ab4-c8e0-468f-919a-b984390bd0db"/>
 				<box>
 					<pen lineWidth="1.0" lineStyle="Solid"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<text><![CDATA[Place]]></text>
 			</staticText>
+			<staticText>
+				<reportElement x="438" y="4" width="106" height="30" uuid="85f3accb-9f77-41a1-a7df-beda0e455c13"/>
+				<box>
+					<pen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Status]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="190" y="4" width="81" height="30" uuid="94b1ca5a-28d9-44ad-8926-177af4c83b85"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Start Time]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="271" y="4" width="75" height="30" uuid="54502f32-da8b-4f17-9ef0-bba4c348c961"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[End Time]]></text>
+			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="28" splitType="Stretch">
+		<band height="32" splitType="Stretch">
 			<textField>
-				<reportElement x="26" y="0" width="94" height="28" uuid="c45ad7f3-4da8-40cf-a7f5-46833bdd9a96"/>
+				<reportElement x="0" y="-1" width="110" height="32" uuid="84f2dda2-4f18-484e-a266-607af8a1c240"/>
 				<box>
-					<pen lineWidth="1.0" lineStyle="Solid"/>
 					<topPen lineWidth="1.0" lineStyle="Solid"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid"/>
 					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
@@ -197,45 +140,8 @@ Where s.schedule_id=us.schedule_id and u.user_id=us.user_id]]>
 				<textFieldExpression><![CDATA[$F{title}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="216" y="0" width="50" height="28" uuid="6e0da18a-6471-44e9-9dab-e63f85eab524"/>
+				<reportElement x="110" y="-1" width="80" height="32" uuid="a5f202af-89bc-4dde-ac65-c3ee49789512"/>
 				<box>
-					<pen lineWidth="1.0" lineStyle="Solid"/>
-					<topPen lineWidth="1.0" lineStyle="Solid"/>
-					<leftPen lineWidth="1.0" lineStyle="Solid"/>
-					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
-					<rightPen lineWidth="1.0" lineStyle="Solid"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{start_time}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="266" y="0" width="50" height="28" uuid="76296757-69c5-4d5e-b9b7-e597598354fd"/>
-				<box>
-					<pen lineWidth="1.0" lineStyle="Solid"/>
-					<topPen lineWidth="1.0" lineStyle="Solid"/>
-					<leftPen lineWidth="1.0" lineStyle="Solid"/>
-					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
-					<rightPen lineWidth="1.0" lineStyle="Solid"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{end_time}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="316" y="0" width="60" height="28" uuid="379ac152-3651-448f-a05a-1823e39d186d"/>
-				<box>
-					<pen lineWidth="1.0" lineStyle="Solid"/>
-					<topPen lineWidth="1.0" lineStyle="Solid"/>
-					<leftPen lineWidth="1.0" lineStyle="Solid"/>
-					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
-					<rightPen lineWidth="1.0" lineStyle="Solid"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{privacy}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="376" y="0" width="94" height="28" uuid="220fdbbc-e7b6-4ae1-8c80-04724cd0222e"/>
-				<box>
-					<pen lineWidth="1.0" lineStyle="Solid"/>
 					<topPen lineWidth="1.0" lineStyle="Solid"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid"/>
 					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
@@ -245,9 +151,8 @@ Where s.schedule_id=us.schedule_id and u.user_id=us.user_id]]>
 				<textFieldExpression><![CDATA[$F{description}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="470" y="0" width="49" height="28" uuid="d74b079b-3e33-4ab0-b333-f13f5aa91f9d"/>
+				<reportElement x="346" y="-1" width="92" height="32" uuid="7e2465b3-798d-4cba-9be1-a69e17e3a663"/>
 				<box>
-					<pen lineWidth="1.0" lineStyle="Solid"/>
 					<topPen lineWidth="1.0" lineStyle="Solid"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid"/>
 					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
@@ -256,30 +161,43 @@ Where s.schedule_id=us.schedule_id and u.user_id=us.user_id]]>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{place}]]></textFieldExpression>
 			</textField>
-			<textField pattern="MMMMM dd, yyyy">
-				<reportElement x="120" y="0" width="50" height="28" uuid="caecd32e-dba6-4dfc-94f8-5c4f92f57a7f"/>
+			<textField>
+				<reportElement x="438" y="-1" width="106" height="32" uuid="f39030fa-274f-49e8-9c2a-347108d61ece"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid"/>
 					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
 					<rightPen lineWidth="1.0" lineStyle="Solid"/>
 				</box>
-				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{status}]]></textFieldExpression>
 			</textField>
-			<textField pattern="MMMMM dd, yyyy">
-				<reportElement x="170" y="0" width="46" height="28" uuid="78ce4ce6-2689-45a7-bd2f-a565746b7010"/>
+			<textField>
+				<reportElement x="190" y="-1" width="81" height="32" uuid="7ff9d202-115a-45ce-bbfc-c3b4cf22e055"/>
 				<box>
 					<topPen lineWidth="1.0" lineStyle="Solid"/>
 					<leftPen lineWidth="1.0" lineStyle="Solid"/>
 					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
 					<rightPen lineWidth="1.0" lineStyle="Solid"/>
 				</box>
-				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{start_time}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="271" y="-1" width="75" height="32" uuid="661c0cab-dbbc-4461-9665-28e36e4e1311"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{end_time}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
 	<columnFooter>
-		<band height="45" splitType="Stretch"/>
+		<band height="85" splitType="Stretch"/>
 	</columnFooter>
 	<pageFooter>
 		<band height="54" splitType="Stretch"/>

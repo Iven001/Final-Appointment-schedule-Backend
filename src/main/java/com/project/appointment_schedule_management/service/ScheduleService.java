@@ -6,6 +6,7 @@ import java.util.List;
 import com.project.appointment_schedule_management.Interface.InterSchedule;
 import com.project.appointment_schedule_management.dto.AllScheduleMember;
 import com.project.appointment_schedule_management.dto.SchduleDto;
+import com.project.appointment_schedule_management.model.Report;
 import com.project.appointment_schedule_management.model.Schedule;
 
 public interface ScheduleService {
@@ -28,7 +29,7 @@ public interface ScheduleService {
 
    Schedule save(Schedule schedule);
 
-//    List<InterSchedule> getDailyReport(int userId, LocalDate start);
+   List<InterSchedule> getDailyReport(int userId, LocalDate start);
  
 
 }

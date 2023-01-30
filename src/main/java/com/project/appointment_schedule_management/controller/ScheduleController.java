@@ -1,5 +1,6 @@
 package com.project.appointment_schedule_management.controller;
 
+import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.time.LocalDate;
 import java.util.HashMap;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,6 +35,7 @@ import com.project.appointment_schedule_management.dto.AllScheduleMember;
 import com.project.appointment_schedule_management.dto.ChangeOwnerDto;
 import com.project.appointment_schedule_management.dto.SchduleDto;
 import com.project.appointment_schedule_management.dto.ScheduleEdit;
+import com.project.appointment_schedule_management.model.Report;
 import com.project.appointment_schedule_management.model.Schedule;
 import com.project.appointment_schedule_management.model.User;
 import com.project.appointment_schedule_management.service.FileService;
@@ -42,6 +45,13 @@ import com.project.appointment_schedule_management.utils.DeleteScheduleMail;
 import com.project.appointment_schedule_management.utils.InviteMail;
 import com.project.appointment_schedule_management.utils.RemoveFromMeetingRequestMail;
 import com.project.appointment_schedule_management.utils.RemoveUserMail;
+
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
@@ -59,6 +69,9 @@ public class ScheduleController {
 
     @Autowired
     private RemoveFromMeetingRequestMail requestMail;
+
+    @Autowired
+    private ScheduleRepository schRepository;
 
     private final ScheduleService schService;
     private final ScheduleRepository schRepo;
@@ -342,25 +355,48 @@ public class ScheduleController {
 
     }
 
-
     // @GetMapping("/dailyReport")
-    // public ResponseEntity<?> DailyReport (@RequestParam int userId,@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)LocalDate start) {
+    // public ResponseEntity<?> DailyReport(@RequestParam int userId,@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)LocalDate start){
     //     try{
-    //                 List <InterSchedule> schedules = schService.getDailyReport(userId, start);
-    //                 String reportPath = "src\\main\\resources";
-    //                 JasperReport jReport = JasperCompileManager.compileReport(reportPath + "\\sch.jrxml");
-    //                 JRBeanCollectionDataSource jrBeanCollectionDataSource = new JRBeanCollectionDataSource(schedules);
-    //                 Map<String, Object> parameters = new HashMap<>();
-    //                 parameters.put("schedules", schedules);
-    //                 JasperPrint jasperprint = JasperFillManager.fillReport(jReport, parameters, jrBeanCollectionDataSource);
-    //                 JasperExportManager.exportReportToPdfFile(jasperprint, "C:\\Downloads\\Report.pdf");
-    //                 System.out.println("Done");
-    //                 return ResponseEntity.status(HttpStatus.OK).body(schedules);
-    //             }catch(Exception e){
-    //                 System.out.print(e.getMessage());
-    //                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null); 
-    //             }
+    //     String path = "C:\\Users\\User\\Downloads\\Report";
+    //     List<InterSchedule> list = schRepository.dailyReport(userId, start);
+    //     //load file and compile it
+    //     File file = ResourceUtils.getFile("classpath: sch.jrxml");
+    //     JasperReport jasperReport = JasperCompileManager.compileReport(file.getAbsolutePath());
+    //     JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(list);
+    //     Map<String, Object> parameters = new HashMap<>();
+    //     parameters.put("createdBy", "Java Techie");
+    //     JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, dataSource);
 
+    //         JasperExportManager.exportReportToPdfFile(jasperPrint, path + "\\Daily_Report.pdf");
+
+    //     return ResponseEntity.status(HttpStatus.OK).body(list);
+    //     }catch(Exception e){
+    //         System.out.print(e.getMessage());
+    //         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null); 
+    //         }
+    //     }
+    // }
+
+    @GetMapping("/dailyReport")
+    public ResponseEntity<?> DailyReport (@RequestParam int userId,@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)LocalDate start) {
+        try{
+                    List <InterSchedule> schedules = schRepository.dailyReport(userId, start);
+                    String reportPath = "src\\main\\resources";
+                    JasperReport jReport = JasperCompileManager.compileReport(reportPath + "\\sch.jrxml");
+                    JRBeanCollectionDataSource jrBeanCollectionDataSource = new JRBeanCollectionDataSource(schedules);
+                    Map<String, Object> parameters = new HashMap<>();
+                    parameters.put("schedules", "schedules");
+                    JasperPrint jasperprint = JasperFillManager.fillReport(jReport, parameters, jrBeanCollectionDataSource);
+                    JasperExportManager.exportReportToPdfFile(jasperprint, "C:\\Users\\User\\Downloads\\Report.pdf");
+                    System.out.println("Done");
+                    return ResponseEntity.status(HttpStatus.OK).body(schedules);
+                }catch(Exception e){
+                    System.out.print(e.getMessage());
+                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null); 
+                }
+            }
+        }
 
     //         }
     // @GetMapping("/dailyReport")
@@ -394,6 +430,5 @@ public class ScheduleController {
     //             }
 
 
-        }
-
+        
 

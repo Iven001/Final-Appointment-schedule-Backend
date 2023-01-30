@@ -10,6 +10,7 @@ import com.project.appointment_schedule_management.Interface.InterSchedule;
 import com.project.appointment_schedule_management.dao.ScheduleRepository;
 import com.project.appointment_schedule_management.dto.AllScheduleMember;
 import com.project.appointment_schedule_management.dto.SchduleDto;
+import com.project.appointment_schedule_management.model.Report;
 import com.project.appointment_schedule_management.model.Schedule;
 import com.project.appointment_schedule_management.model.User;
 
@@ -96,11 +97,11 @@ public class ScheduleServiceImpl implements ScheduleService {
         return schRepo.save(schedule);
     }
 
-    // @Override
-    // public List<InterSchedule> getDailyReport(int userId, LocalDate start) {
-    //     List<InterSchedule> list = (List<InterSchedule>) schRepo.dailyReport(userId, start);
-    //     return list;
-    // }
+    @Override
+    public List<InterSchedule> getDailyReport(int userId, LocalDate start) {
+        List<InterSchedule> list = (List<InterSchedule>) schRepo.dailyReport(userId, start);
+        return list;
+    }
 
     // @Override
     // public Schedule updateSchedule(SchduleDto schduleDto) {
