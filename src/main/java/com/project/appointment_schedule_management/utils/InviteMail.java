@@ -30,10 +30,14 @@ public class InviteMail {
 
 		String subject = "Dear User , You have been assigned to the following meeting.";
 
-		String content = "<span>Assigned from organizer</span>"+"<b>"+createUserName+"</b>"
+		String content = "<span>Assigned from organizer -</span>"+"<b>"+createUserName+"</b>"
+								+"<p>"+"</p>"
                         +"<span>Date - </span>"+"<span>"+sch.getStart()+"</span>"
+                        		+"<p>"+"</p>"
                         +"<span>Time - </span>"+"<b>"+sch.getStart_time()+"</b>"
+                        		+"<p>"+"</p>"
                         +"<span>Location - </span>"+"<b>"+sch.getPlace()+"</b>"
+                        		+"<p>"+"</p>"
                 + "<span>Click this to check your appointments </span>" + "<span><b><a href=\"" + "http://localhost:4200/login"
                 + "\">to log in</a><b></span>";
 				

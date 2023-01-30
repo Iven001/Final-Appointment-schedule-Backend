@@ -32,6 +32,7 @@ public class DeleteScheduleMail {
 		String subject = "Dear User , the following meeting has been canceled.";
 
 		String content = "<span>Meeting -</span>"+"<b>"+schTitle+"</b>"
+				+"<p>"+"</p>"
                 + "<span>Click this to check your appointments </span>" + "<span><b><a href=\"" + "http://localhost:4200/login"
                 + "\">to log in</a><b></spanss>";
 				

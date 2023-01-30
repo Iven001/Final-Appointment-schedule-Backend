@@ -292,13 +292,16 @@ public class ScheduleController {
 
             List<User> userList = dto.getMembersList();
             userList.add(u);
-            if (schedule.getOwnerId() == dto.getCurrentUserId()) {
+            if (schedule.getOwnerId() == dto.getCurrentUserId() || schedule.getCreateUser()==dto.getCurrentUserId()) {
                 schedule.setUpdateUser(dto.getCurrentUserId());
                 schedule.setUpdatetime(now);
                 schedule.setMembers(userList);
                 schService.save(schedule);
                 
                 emailTask.sendEmail(u.getMail(), schDto, currentUser.getUname());
+            }else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not Found");
+
             }
             //schService.save(schedule);
             return ResponseEntity.status(HttpStatus.OK).body(schedule);
