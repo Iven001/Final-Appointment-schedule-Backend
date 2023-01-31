@@ -94,16 +94,15 @@ public class ScheduleController {
     public ResponseEntity<?> createRegister(@RequestBody SchduleDto sch)
             throws UnsupportedEncodingException, MessagingException {
 
-               
-                    schService.saveSchedule(sch);
+        schService.saveSchedule(sch);
         try {
             // schService.saveSchedule(sch);
             List<User> members = sch.getMembersList();
             User createUser = userService.findById(sch.getCreateUser());
             String createUserName = createUser.getUname();
             for (User u : members) {
-                if(u.getUserId() != createUser.getUserId()){
-                    emailTask.sendEmail(u.getMail(), sch , createUserName);
+                if (u.getUserId() != createUser.getUserId()) {
+                    emailTask.sendEmail(u.getMail(), sch, createUserName);
                 }
             }
             return ResponseEntity.status(HttpStatus.CREATED).body(sch);
@@ -169,7 +168,8 @@ public class ScheduleController {
     }
 
     @PutMapping("/removeUser")
-    public ResponseEntity<?> deleteUserFromSchedule(@RequestBody ChangeOwnerDto dto) throws UnsupportedEncodingException, MessagingException {
+    public ResponseEntity<?> deleteUserFromSchedule(@RequestBody ChangeOwnerDto dto)
+            throws UnsupportedEncodingException, MessagingException {
         LocalDate upDate = LocalDate.now();
         Schedule schedule = schService.findByScheduleId(dto.getScheduleId());
         User u = userService.findById(dto.getUserId());
@@ -186,32 +186,28 @@ public class ScheduleController {
             schedule.setUpdateUser(dto.getCurrentUserId());
             schedule.setMembers(users);
             schService.save(schedule);
-            
-          
+
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Check Ur User Informantion!");
         }
         return ResponseEntity.status(HttpStatus.OK).body(schedule);
     }
 
-    @PutMapping("/deleteSchedule")
-    public ResponseEntity<?> deleteSchedule(@RequestBody ChangeOwnerDto dto) {
+    @DeleteMapping("/deleteSchedule")
+    public ResponseEntity<?> deleteSchedule(@RequestParam int scheduleId, @RequestParam int currentUserId) {
 
         LocalDate lt = LocalDate.now();
         try {
-            Schedule sch = schService.findByScheduleId(dto.getScheduleId());
+            Schedule sch = schService.findByScheduleId(scheduleId);
             List<User> members = sch.getMembers();
             String schTitle = sch.getTitle();
 
             if (sch != null) {
-                if (sch.getCreateUser() == dto.getCurrentUserId() || sch.getOwnerId() == dto.getCurrentUserId()) {
-//                    sch.setDeleteUser(dto.getCurrentUserId());
-//                    sch.setIsDelete(dto.getIsDelete());
-//                    sch.setStatus("isDelete");
-                	
-                    schService.deleteSchedule(dto.getScheduleId());
+                if (sch.getCreateUser() == currentUserId || sch.getOwnerId() == currentUserId) {
 
-                    for (User u : members){
+                    schService.deleteSchedule(scheduleId);
+
+                    for (User u : members) {
                         deleteMail.sendEmail(u.getMail(), schTitle);
                     }
                 } else {
@@ -220,9 +216,9 @@ public class ScheduleController {
 
                 // schService.deleteSchedule(scheduleId);
             }
-            return ResponseEntity.status(HttpStatus.OK).body(sch);
+            return ResponseEntity.status(HttpStatus.OK).body(null);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error");
         }
 
     }
@@ -258,20 +254,19 @@ public class ScheduleController {
 
     }
 
-
     @PutMapping("/finishSchedule")
-    public ResponseEntity<?> finishSchedule (@RequestBody ChangeOwnerDto dto) {
+    public ResponseEntity<?> finishSchedule(@RequestBody ChangeOwnerDto dto) {
 
         LocalDate updateDate = LocalDate.now();
 
         try {
             Schedule sch = schService.findByScheduleId(dto.getScheduleId());
 
-            if (sch!=null && sch.getOwnerId()==dto.getCurrentUserId()) {
-                    sch.setUpdatetime(updateDate);
-                    sch.setUpdateUser(dto.getCurrentUserId());
-                    sch.setStatus("finished");
-            }else{
+            if (sch != null && sch.getOwnerId() == dto.getCurrentUserId()) {
+                sch.setUpdatetime(updateDate);
+                sch.setUpdateUser(dto.getCurrentUserId());
+                sch.setStatus("finished");
+            } else {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Check Ur userDetails");
             }
             schService.save(sch);
@@ -282,8 +277,6 @@ public class ScheduleController {
 
     }
 
-
-
     @PutMapping("/addMembers")
     public ResponseEntity<?> addUserFromSchedule(@RequestBody AddMembers dto) {
 
@@ -293,11 +286,10 @@ public class ScheduleController {
 
             Schedule schedule = schService.findByScheduleId(dto.getScheduleId());
 
-       
             User u = userService.getUserById(dto.getAddUserId());
-            
+
             User currentUser = userService.getUserById(dto.getCurrentUserId());
-            
+
             SchduleDto schDto = new SchduleDto();
             schDto.setStart(schedule.getStart());
             schDto.setStart_time(schedule.getStart_time());
@@ -305,18 +297,17 @@ public class ScheduleController {
 
             List<User> userList = dto.getMembersList();
             userList.add(u);
-            if (schedule.getOwnerId() == dto.getCurrentUserId() || schedule.getCreateUser()==dto.getCurrentUserId()) {
+            if (schedule.getOwnerId() == dto.getCurrentUserId() || schedule.getCreateUser() == dto.getCurrentUserId()) {
                 schedule.setUpdateUser(dto.getCurrentUserId());
                 schedule.setUpdatetime(now);
                 schedule.setMembers(userList);
                 schService.save(schedule);
-                
-                emailTask.sendEmail(u.getMail(), schDto, currentUser.getUname());
-            }else {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not Found");
 
+                emailTask.sendEmail(u.getMail(), schDto, currentUser.getUname());
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No access");
             }
-            //schService.save(schedule);
+            // schService.save(schedule);
             return ResponseEntity.status(HttpStatus.OK).body(schedule);
 
         } catch (Exception e) {
@@ -326,14 +317,15 @@ public class ScheduleController {
     }
 
     @PutMapping("/request")
-    public ResponseEntity<?> requestToQuit (@RequestBody ChangeOwnerDto dto) {
+    public ResponseEntity<?> requestToQuit(@RequestBody ChangeOwnerDto dto) {
 
         try {
             Schedule schedule = schService.findByScheduleId(dto.getScheduleId());
-            if (schedule!=null) {
+            if (schedule != null) {
                 User organizer = userService.getUserById(dto.getOwnerId());
                 User requestUser = userService.getUserById(dto.getUserId());
-                requestMail.sendEmail(organizer.getMail(),dto.getStatus(),schedule.getTitle(),requestUser.getUname());
+                requestMail.sendEmail(organizer.getMail(), dto.getStatus(), schedule.getTitle(),
+                        requestUser.getUname());
                 return ResponseEntity.status(HttpStatus.OK).body(schedule);
             }
         } catch (Exception e) {
@@ -342,20 +334,19 @@ public class ScheduleController {
         return null;
 
     }
-    
-    @PutMapping("/editTitleAndDs")
-    public ResponseEntity<?> editTitleAndDs (@RequestBody ScheduleEdit dto) {
-    	
-        LocalDate now = LocalDate.now();
 
+    @PutMapping("/editTitleAndDs")
+    public ResponseEntity<?> editTitleAndDs(@RequestBody ScheduleEdit dto) {
+
+        LocalDate now = LocalDate.now();
 
         try {
             Schedule schedule = schService.findByScheduleId(dto.getScheduleId());
-            if (schedule!=null || schedule.getOwnerId()==dto.getCurrentUserId()) {
-            	schedule.setUpdateUser(dto.getCurrentUserId());
-            	schedule.setUpdatetime(now);
-            	schedule.setTitle(dto.getTitle());
-            	schedule.setDescription(dto.getDescription());
+            if (schedule != null || schedule.getOwnerId() == dto.getCurrentUserId()) {
+                schedule.setUpdateUser(dto.getCurrentUserId());
+                schedule.setUpdatetime(now);
+                schedule.setTitle(dto.getTitle());
+                schedule.setDescription(dto.getDescription());
                 schService.save(schedule);
                 return ResponseEntity.status(HttpStatus.OK).body(schedule);
             }
@@ -367,79 +358,85 @@ public class ScheduleController {
     }
 
     // @GetMapping("/dailyReport")
-    // public ResponseEntity<?> DailyReport(@RequestParam int userId,@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)LocalDate start){
-    //     try{
-    //     String path = "C:\\Users\\User\\Downloads\\Report";
-    //     List<InterSchedule> list = schRepository.dailyReport(userId, start);
-    //     //load file and compile it
-    //     File file = ResourceUtils.getFile("classpath: sch.jrxml");
-    //     JasperReport jasperReport = JasperCompileManager.compileReport(file.getAbsolutePath());
-    //     JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(list);
-    //     Map<String, Object> parameters = new HashMap<>();
-    //     parameters.put("createdBy", "Java Techie");
-    //     JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, dataSource);
+    // public ResponseEntity<?> DailyReport(@RequestParam int userId,@RequestParam
+    // @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)LocalDate start){
+    // try{
+    // String path = "C:\\Users\\User\\Downloads\\Report";
+    // List<InterSchedule> list = schRepository.dailyReport(userId, start);
+    // //load file and compile it
+    // File file = ResourceUtils.getFile("classpath: sch.jrxml");
+    // JasperReport jasperReport =
+    // JasperCompileManager.compileReport(file.getAbsolutePath());
+    // JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(list);
+    // Map<String, Object> parameters = new HashMap<>();
+    // parameters.put("createdBy", "Java Techie");
+    // JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport,
+    // parameters, dataSource);
 
-    //         JasperExportManager.exportReportToPdfFile(jasperPrint, path + "\\Daily_Report.pdf");
+    // JasperExportManager.exportReportToPdfFile(jasperPrint, path +
+    // "\\Daily_Report.pdf");
 
-    //     return ResponseEntity.status(HttpStatus.OK).body(list);
-    //     }catch(Exception e){
-    //         System.out.print(e.getMessage());
-    //         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null); 
-    //         }
-    //     }
+    // return ResponseEntity.status(HttpStatus.OK).body(list);
+    // }catch(Exception e){
+    // System.out.print(e.getMessage());
+    // return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+    // }
+    // }
     // }
 
     @GetMapping("/dailyReport")
-    public ResponseEntity<?> DailyReport (@RequestParam int userId,@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)LocalDate start) {
-        try{
-                    List <InterSchedule> schedules = schRepository.dailyReport(userId, start);
-                    String reportPath = "src\\main\\resources";
-                    JasperReport jReport = JasperCompileManager.compileReport(reportPath + "\\sch.jrxml");
-                    JRBeanCollectionDataSource jrBeanCollectionDataSource = new JRBeanCollectionDataSource(schedules);
-                    Map<String, Object> parameters = new HashMap<>();
-                    parameters.put("schedules", "schedules");
-                    JasperPrint jasperprint = JasperFillManager.fillReport(jReport, parameters, jrBeanCollectionDataSource);
-                    JasperExportManager.exportReportToPdfFile(jasperprint, "C:\\Users\\User\\Downloads\\Report.pdf");
-                    System.out.println("Done");
-                    return ResponseEntity.status(HttpStatus.OK).body(schedules);
-                }catch(Exception e){
-                    System.out.print(e.getMessage());
-                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null); 
-                }
-            }
+    public ResponseEntity<?> DailyReport(@RequestParam int userId,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate start) {
+        try {
+            List<InterSchedule> schedules = schRepository.dailyReport(userId, start);
+            String reportPath = "src\\main\\resources";
+            JasperReport jReport = JasperCompileManager.compileReport(reportPath + "\\sch.jrxml");
+            JRBeanCollectionDataSource jrBeanCollectionDataSource = new JRBeanCollectionDataSource(schedules);
+            Map<String, Object> parameters = new HashMap<>();
+            parameters.put("schedules", "schedules");
+            JasperPrint jasperprint = JasperFillManager.fillReport(jReport, parameters, jrBeanCollectionDataSource);
+            JasperExportManager.exportReportToPdfFile(jasperprint, "C:\\Users\\User\\Downloads\\Report.pdf");
+            System.out.println("Done");
+            return ResponseEntity.status(HttpStatus.OK).body(schedules);
+        } catch (Exception e) {
+            System.out.print(e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
+    }
+}
 
-    //         }
-    // @GetMapping("/dailyReport")
-    // public ResponseEntity<?> getDailyReport(
-    //  @RequestParam int userId, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)LocalDate start)
-    //         throws Exception, IOException{
+// }
+// @GetMapping("/dailyReport")
+// public ResponseEntity<?> getDailyReport(
+// @RequestParam int userId, @RequestParam @DateTimeFormat(iso =
+// DateTimeFormat.ISO.DATE)LocalDate start)
+// throws Exception, IOException{
 
-    //             System.out.println("test");
+// System.out.println("test");
 
-    //             try {
-    //                 String path = System.getProperty("java.class.path").split(",")[0].replace("src\\main\\resources\\Files", "").replace("src\\main\\resources\\Files", "")
-    //             + "src\\main\\resources\\DailySchedule.jrxml";
+// try {
+// String path =
+// System.getProperty("java.class.path").split(",")[0].replace("src\\main\\resources\\Files",
+// "").replace("src\\main\\resources\\Files", "")
+// + "src\\main\\resources\\DailySchedule.jrxml";
 
-    //             List<InterSchedule> exportFile = schRepo.dailyReport(userId, start);
-    //             System.out.println("1. id"+userId+"date : "+start);
-    //             File downloadFile = new File(path + exportFile);
-    //             System.out.println("2. id"+userId+"date : "+start);
-    //             InputStreamResource resouce = new InputStreamResource(new FileInputStream(downloadFile));
-    //             System.out.println("3. id"+userId+"date : "+start);
-    //             HttpHeaders header = new HttpHeaders();
-    //             header.add(HttpHeaders.CONTENT_DISPOSITION, "filename = "+ downloadFile.getName());
-    //     return ResponseEntity.ok()
-    //     // .body("ok");
-    //             .headers(header)
-    //             .contentLength(downloadFile.length())
-    //             .contentType(MediaType.parseMediaType(MediaType.APPLICATION_OCTET_STREAM_VALUE))
-    //             .body(resouce);
-       
-    //             } catch (Exception e) {
-    //                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-    //             }
+// List<InterSchedule> exportFile = schRepo.dailyReport(userId, start);
+// System.out.println("1. id"+userId+"date : "+start);
+// File downloadFile = new File(path + exportFile);
+// System.out.println("2. id"+userId+"date : "+start);
+// InputStreamResource resouce = new InputStreamResource(new
+// FileInputStream(downloadFile));
+// System.out.println("3. id"+userId+"date : "+start);
+// HttpHeaders header = new HttpHeaders();
+// header.add(HttpHeaders.CONTENT_DISPOSITION, "filename = "+
+// downloadFile.getName());
+// return ResponseEntity.ok()
+// // .body("ok");
+// .headers(header)
+// .contentLength(downloadFile.length())
+// .contentType(MediaType.parseMediaType(MediaType.APPLICATION_OCTET_STREAM_VALUE))
+// .body(resouce);
 
-
-        
-
+// } catch (Exception e) {
+// return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+// }
