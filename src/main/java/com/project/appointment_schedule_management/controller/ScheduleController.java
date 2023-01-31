@@ -385,25 +385,24 @@ public class ScheduleController {
     // }
 
     @GetMapping("/dailyReport")
-    public ResponseEntity<?> DailyReport(@RequestParam int userId,
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate start) {
-        try {
-            List<InterSchedule> schedules = schRepository.dailyReport(userId, start);
-            String reportPath = "src\\main\\resources";
-            JasperReport jReport = JasperCompileManager.compileReport(reportPath + "\\sch.jrxml");
-            JRBeanCollectionDataSource jrBeanCollectionDataSource = new JRBeanCollectionDataSource(schedules);
-            Map<String, Object> parameters = new HashMap<>();
-            parameters.put("schedules", "schedules");
-            JasperPrint jasperprint = JasperFillManager.fillReport(jReport, parameters, jrBeanCollectionDataSource);
-            JasperExportManager.exportReportToPdfFile(jasperprint, "C:\\Users\\User\\Downloads\\Report.pdf");
-            System.out.println("Done");
-            return ResponseEntity.status(HttpStatus.OK).body(schedules);
-        } catch (Exception e) {
-            System.out.print(e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+    public ResponseEntity<?> DailyReport (@RequestParam int userId,@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)LocalDate start) {
+        try{
+                    List <InterSchedule> schedules = schRepository.dailyReport(userId, start);
+                    String reportPath = "src\\main\\resources";
+                    JasperReport jReport = JasperCompileManager.compileReport(reportPath + "\\sch.jrxml");
+                    JRBeanCollectionDataSource jrBeanCollectionDataSource = new JRBeanCollectionDataSource(schedules);
+                    Map<String, Object> parameters = new HashMap<>();
+                    parameters.put("schedules", "schedules");
+                    JasperPrint jasperprint = JasperFillManager.fillReport(jReport, parameters, jrBeanCollectionDataSource);
+                    JasperExportManager.exportReportToPdfFile(jasperprint, "C:\\Users\\User\\Downloads\\Daily_Report.pdf");
+                    System.out.println("Done");
+                    return ResponseEntity.status(HttpStatus.OK).body(schedules);
+                }catch(Exception e){
+                    System.out.print(e.getMessage());
+                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null); 
+                }
+            }
         }
-    }
-}
 
 // }
 // @GetMapping("/dailyReport")
