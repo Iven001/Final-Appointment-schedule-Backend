@@ -203,7 +203,7 @@ public class ScheduleController {
             String schTitle = sch.getTitle();
 
             if (sch != null) {
-                if (sch.getCreateUser() == currentUserId || sch.getOwnerId() == currentUserId) {
+                if (sch.getOwnerId() == currentUserId) {
 
                     for (User u : members) {
                         deleteMail.sendEmail(u.getMail(), schTitle);
