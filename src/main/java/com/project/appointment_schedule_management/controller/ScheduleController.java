@@ -205,11 +205,13 @@ public class ScheduleController {
             if (sch != null) {
                 if (sch.getCreateUser() == currentUserId || sch.getOwnerId() == currentUserId) {
 
-                    schService.deleteSchedule(scheduleId);
-
                     for (User u : members) {
                         deleteMail.sendEmail(u.getMail(), schTitle);
                     }
+
+                    schService.deleteSchedule(scheduleId);
+
+                    
                 } else {
                     return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Check ur User Information");
                 }
